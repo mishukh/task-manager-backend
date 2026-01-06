@@ -25,8 +25,8 @@ Create a file named `.env` in the root directory (same level as `package.json`).
 
 ```env
 PORT=5000
-MONGO_URI=mongodb://localhost:27017/taskmanager
-JWT_SECRET=super_secret_key_change_me
+MONGO_URI=mongo_key
+JWT_SECRET=super_secret_key
 ```
 *   *Note: If using MongoDB Atlas, replace the `MONGO_URI` with your connection string.*
 
