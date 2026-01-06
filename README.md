@@ -4,6 +4,15 @@ A robust, multi-tenant REST API for managing project workflows. This backend all
 
 ---
 
+## Tech Stack
+
+*   **Runtime**: Node.js
+*   **Framework**: Express.js
+*   **Database**: MongoDB (Mongoose Schema)
+*   **Auth**: JSON Web Tokens (JWT) & Bcrypt
+*   **Validation**: Mongoose Built-in Validators
+
+
 ## 🚀 Quick Start Guide
 
 Follow these steps to get the server running without any errors.
