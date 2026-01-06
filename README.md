@@ -92,6 +92,4 @@ This is the backend API for a Task Management application, built with Node.js, E
 -   `PUT /api/tasks/:id` - Update a task (Admin/Manager)
 -   `DELETE /api/tasks/:id` - Delete a task (Admin/Manager)
 
-## License
 
-This project is licensed under the ISC License.
