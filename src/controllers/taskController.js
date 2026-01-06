@@ -5,6 +5,7 @@ exports.createTask = async (req, res) => {
     try {
         const task = await Task.create({
             ...req.body,
+            organization: req.user.organization,
             createdBy: req.user._id
         });
         res.json(task);
@@ -16,7 +17,7 @@ exports.createTask = async (req, res) => {
 // Get all tasks (optionally filter by project, status, or assigned user)
 exports.getTasks = async (req, res) => {
     try {
-        const filters = { ...req.query };
+        const filters = { ...req.query, organization: req.user.organization };
         if (filters.project) filters.project = filters.project;
         if (filters.status) filters.status = filters.status;
         if (filters.assignedTo) filters.assignedTo = filters.assignedTo;
@@ -31,7 +32,7 @@ exports.getTasks = async (req, res) => {
 // Get single task
 exports.getTask = async (req, res) => {
     try {
-        const task = await Task.findById(req.params.id).populate("project assignedTo createdBy");
+        const task = await Task.findOne({ _id: req.params.id, organization: req.user.organization }).populate("project assignedTo createdBy");
         if (!task) return res.status(404).json({ message: "Task not found" });
         res.json(task);
     } catch (err) {
@@ -42,7 +43,11 @@ exports.getTask = async (req, res) => {
 // Update task
 exports.updateTask = async (req, res) => {
     try {
-        const task = await Task.findByIdAndUpdate(req.params.id, req.body, { new: true });
+        const task = await Task.findOneAndUpdate(
+            { _id: req.params.id, organization: req.user.organization },
+            req.body,
+            { new: true }
+        );
         if (!task) return res.status(404).json({ message: "Task not found" });
         res.json(task);
     } catch (err) {
@@ -53,7 +58,7 @@ exports.updateTask = async (req, res) => {
 // Delete task
 exports.deleteTask = async (req, res) => {
     try {
-        const task = await Task.findByIdAndDelete(req.params.id);
+        const task = await Task.findOneAndDelete({ _id: req.params.id, organization: req.user.organization });
         if (!task) return res.status(404).json({ message: "Task not found" });
         res.json({ message: "Task deleted" });
     } catch (err) {

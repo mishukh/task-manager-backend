@@ -8,6 +8,7 @@ const TaskSchema = new mongoose.Schema({
     dueDate: Date,
     project: { type: mongoose.Schema.Types.ObjectId, ref: "Project" },
     assignedTo: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
+    organization: { type: mongoose.Schema.Types.ObjectId, ref: "Organization" },
     createdBy: { type: mongoose.Schema.Types.ObjectId, ref: "User" },
 }, { timestamps: true });
 

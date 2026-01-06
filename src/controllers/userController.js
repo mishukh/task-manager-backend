@@ -14,7 +14,7 @@ exports.getUsers = async (req, res) => {
 // Get a single user by ID
 exports.getUser = async (req, res) => {
     try {
-        const user = await User.findById(req.params.id).select("-password");
+        const user = await User.findOne({ _id: req.params.id, organization: req.user.organization }).select("-password");
         if (!user) return res.status(404).json({ message: "User not found" });
         res.json(user);
     } catch (err) {
@@ -29,7 +29,11 @@ exports.updateUser = async (req, res) => {
         if (updates.password) {
             updates.password = await bcrypt.hash(updates.password, 10);
         }
-        const user = await User.findByIdAndUpdate(req.params.id, updates, { new: true }).select("-password");
+        const user = await User.findOneAndUpdate(
+            { _id: req.params.id, organization: req.user.organization },
+            updates,
+            { new: true }
+        ).select("-password");
         if (!user) return res.status(404).json({ message: "User not found" });
         res.json(user);
     } catch (err) {
@@ -40,7 +44,7 @@ exports.updateUser = async (req, res) => {
 // Delete user (admin only)
 exports.deleteUser = async (req, res) => {
     try {
-        const user = await User.findByIdAndDelete(req.params.id);
+        const user = await User.findOneAndDelete({ _id: req.params.id, organization: req.user.organization });
         if (!user) return res.status(404).json({ message: "User not found" });
         res.json({ message: "User deleted" });
     } catch (err) {
